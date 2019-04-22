@@ -1,0 +1,25 @@
+.ScoreContainer {
+    width: calc(100%);
+    height: calc(100%);
+    display: flex;
+    flex-direction: row;
+}
+
+.stat {
+    background: rgb(73, 73, 73);
+    flex: 1;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    padding: 10px;
+}
+
+.stat:nth-child(3) {
+    margin-right: 0;
+}
+
+.stat > h1 {
+    margin: 0;
+    flex: 1;
+}

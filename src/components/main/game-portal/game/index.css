@@ -1,0 +1,61 @@
+.GameContainer {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 20px);
+    width: calc(100% - 20px);
+    padding: 10px;
+}
+
+.space {
+    display: flex;
+    flex-direction: column;
+    background: rgb(71, 71, 71);
+    margin: 10px;
+    flex: 6;
+    position: relative;
+    overflow: hidden;
+}
+
+.current-stats {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.countdown-container {
+    flex: 1;
+}
+
+.previous-stats {
+    flex: 2;
+    width: 100%;
+    height: 100%;
+}
+
+.space {
+    margin: 0;
+}
+
+.rocket, .asteriod, .hoop{
+    position: absolute;
+}
+
+.asteriod > h3, .hoop > h3 {
+    margin: 0;
+}
+
+.command-center {
+    background: rgb(71, 71, 71);
+    margin: 10px;
+    flex: 1;
+}
+
+.rocket-components {
+    margin: 0;
+}
+
+.base-kit > h3 {
+    z-index: -100;
+    position: fixed;
+    margin: 0;
+}

@@ -1,0 +1,29 @@
+.CommandCenter {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.CommandCenter > .command-pod {
+    flex: 1;
+}
+
+.CommandCenter:nth-child(1) {
+    flex: 2;
+}
+
+
+.pause-play {
+    display: flex;
+    flex-direction: column;
+}
+
+.controls {
+    display: flex;
+    flex-direction: row;
+}
+
+.pause-play > button, .controls > button {
+    flex: 1;
+}
