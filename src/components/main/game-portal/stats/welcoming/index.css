@@ -1,0 +1,11 @@
+.WelcomingContainerStats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.WelcomingContainerStats .wrapper {
+    background: darkgray;
+    padding: 30px;
+}

@@ -1,0 +1,12 @@
+.settings-wrapper {
+    position: relative
+}
+
+.SettingsModalContainer {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    background: white;
+}

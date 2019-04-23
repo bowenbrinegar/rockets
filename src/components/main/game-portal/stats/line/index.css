@@ -1,0 +1,7 @@
+.StatsLineContainer {
+    margin: 0 auto;
+    height: calc(100vh - 140px);
+    padding: 70px;
+    flex: 3;
+}
+  

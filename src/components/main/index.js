@@ -6,7 +6,7 @@ import './index.css';
 class Main extends Component {
     render() {
         return (
-            <div className="Main">
+            <div className="Main" ref={this.props.mainRef}>
                 {
                     this.props.openPortal ? <GamePortal {...this.props} /> : <Welcoming {...this.props} />
                 }

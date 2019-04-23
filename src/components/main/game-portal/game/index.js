@@ -29,7 +29,7 @@ class Game extends Component {
             spaceColors: ['red', 'green', 'blue', 'purple', 'orange', 'teal'],
             spaceColor: 'grey',
             prevYPosition: null,
-            paused: false
+            paused: false,
         }
 
         this.keyDown = this.keyDown.bind(this);
@@ -48,6 +48,9 @@ class Game extends Component {
         this.endGame = this.endGame.bind(this);
 
         this.pause = this.pause.bind(this);
+        this.showStatsAndPause = this.showStatsAndPause.bind(this);
+        this.showLeaderboardAndPause = this.showLeaderboardAndPause.bind(this);
+        this.showSettingsAndPause = this.showSettingsAndPause.bind(this);
         this.partyMode = this.partyMode.bind(this);
         this.rotateColors = this.rotateColors.bind(this);
 
@@ -458,6 +461,42 @@ class Game extends Component {
             }
         }
     }
+
+    showStatsAndPause() {
+        if (!this.props.showStatsView) {
+            this.props.showStats()
+
+            if (!this.state.paused) {
+                this.pause();
+            }
+        } else {
+            this.props.showStats()
+        }
+    }
+
+    showLeaderboardAndPause() {
+        if (!this.props.showLeaderboardView) {
+            this.props.showLeaderboard();
+
+            if (!this.state.paused) {
+                this.pause();
+            }
+        } else {
+            this.props.showLeaderboard();
+        }
+    }
+
+    showSettingsAndPause() {
+        if (!this.props.showSettingsView) {
+            this.props.showSettings();
+
+            if (!this.state.paused) {
+                this.pause();
+            }
+        } else {
+            this.props.showSettings();
+        }
+    }
     
     endGame() {
         const { current } = this.space;
@@ -493,8 +532,8 @@ class Game extends Component {
 
     collectData() {
         if (!this.state.gameOver && !this.state.paused) {
-            const currentSpeed = (Math.abs(this.state.prevYPosition - this.state.posY) / 250) * 10000
-            const newSpeedPoint = this.state.prevYPosition !== null ? currentSpeed > 1000 ? currentSpeed : 1000 : 100;
+            const currentSpeed = (Math.abs(this.state.prevYPosition - this.state.posY) / 250) * 1000
+            const newSpeedPoint = this.state.prevYPosition !== null ? currentSpeed > 100 ? currentSpeed : 100 : 100;
 
             this.props.postSpeedPoint(newSpeedPoint);
 
@@ -578,13 +617,17 @@ class Game extends Component {
                                 <h1>COUNTDOWN: {this.state.countDown}</h1>
                             </div>
 
-                            { this.props.prevTime !== null ? (
-                                <div class='previous-stats'>
+                            { this.props.prevTime !== 60000 ? (
+                                <div className='previous-stats'>
                                     <div>
                                         <h1>Score: {this.props.prevScore}</h1>
                                         <h1>Lives Left: {this.props.prevLives}</h1>
                                         <h1>Time Left: {this.props.prevTime}</h1>
-                                        <button>Submit Last Space Run</button>
+                                        {this.props.uploadStatus === 0 ? (
+                                            <button onClick={this.props.postFlight}>Submit Last Space Run</button>
+                                        ) : (
+                                            <h1>Uploading {this.props.uploadStatus} Objects</h1>
+                                        )}
                                     </div>
                                 </div>
                             ) : null}
@@ -652,7 +695,14 @@ class Game extends Component {
                     </div>
                 </div>
                 <div className='command-center'>
-                    <CommandCenter startGame={this.startGame} newGameClick={this.state.newGameClick} partyMode={this.partyMode} pause={this.pause}/>
+                    <CommandCenter 
+                        startGame={this.startGame} 
+                        newGameClick={this.state.newGameClick} 
+                        partyMode={this.partyMode} pause={this.pause} 
+                        showStats={this.showStatsAndPause} 
+                        showLeaderboard={this.showLeaderboardAndPause}
+                        showSettings={this.showSettingsAndPause}
+                    />
                 </div>
                 <div className='base-kit' style={{opacity: 0}}>
                     <h3 ref={this.baseAsteriod}>--<br/>/------\<br/>\------/<br/>--<br/></h3>

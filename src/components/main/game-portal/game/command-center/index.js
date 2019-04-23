@@ -18,9 +18,9 @@ class CommandCenter extends Component {
                 )}
                 <div className='command-pod controls'>
                     <button onClick={this.props.partyMode}>Party Mode</button>
-                    <button>My Stats</button>
-                    <button>Leaderboard</button>
-                    <button>Settings</button>
+                    <button onClick={this.props.showStats}>Stats</button>
+                    <button onClick={this.props.showLeaderboard}>Leaderboard</button>
+                    <button onClick={this.props.showSettings}>Settings</button>
                 </div>
             </div>
         );

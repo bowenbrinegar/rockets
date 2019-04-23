@@ -1,0 +1,13 @@
+.LeaderboardContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(50,50,50);
+}
+
+.LeaderboardContainer .wrapper {
+    background: darkgray;
+    padding: 30px;
+}

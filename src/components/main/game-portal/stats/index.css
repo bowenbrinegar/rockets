@@ -1,0 +1,41 @@
+.stats-wrapper {
+    position: relative
+}
+
+.StatsModalContainer {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    background: white;
+}
+
+.main-graph {
+    position: relative;
+    z-index: 1000;
+    flex: 3;
+    background: rgb(50,50,50);
+}
+
+.selection {
+    flex: 1;
+    background: grey;
+    display: flex;
+    flex-direction: column;
+}
+
+.selection .type-toggle-container {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    padding: 30px;
+}
+
+.selection .type-toggle-container > button {
+    flex: 1;
+}
+
+.selection .choices {
+    flex: 10;
+}

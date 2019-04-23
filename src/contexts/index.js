@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { FlightControl } from '../utils/flight-control';
+
 
 export const PageContext = React.createContext();
 
@@ -6,7 +8,7 @@ export class PageProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            openPortal: false,
+            openPortal: true,
             score: 0,
             lives: 3,
             time: 60000,
@@ -16,9 +18,13 @@ export class PageProvider extends Component {
             prevTime: 60000,
             boostData: 360,
             speedData: [],
+            prevSpeedData: [],
             positionData: [],
+            positionDataWithTime: [],
             hoopPositionData: [],
+            hoopPositionDataWithTime: [],
             asteriodPositionData: [],
+            asteriodPositionDataWithTime: [],
             lineChartInterval: null,
             lineChartIntervalInvoke: null,
             gaugeInterval: null,
@@ -27,6 +33,12 @@ export class PageProvider extends Component {
             scatterIntervalInvoke: null,
             projectileInterval: null,
             projectileIntervalInvoke: null,
+            statusCheckInterval: null,
+            uploadStatus: 0,
+            showStatsView: false,
+            showLeaderBoardView: false,
+            showSettingsView: false,
+            lastScrollTop: null
         }
 
         this.onClick = this.onClick.bind(this);
@@ -55,6 +67,18 @@ export class PageProvider extends Component {
 
         this.postAsteriodPositionPoints = this.postAsteriodPositionPoints.bind(this);
         this.postHoopPositionPoints = this.postHoopPositionPoints.bind(this);
+
+        this.postFlight = this.postFlight.bind(this);
+
+        this.checkStatus = this.checkStatus.bind(this);
+        this.statusCheckInterval = this.statusCheckInterval.bind(this);
+
+        this.showStats = this.showStats.bind(this);
+        this.showLeaderboard = this.showLeaderboard.bind(this);
+        this.showSettings = this.showSettings.bind(this);
+
+        this.mainRef = React.createRef();
+        this.handleScrollUp = this.handleScrollUp.bind(this);
     }
 
     onClick() {
@@ -121,6 +145,7 @@ export class PageProvider extends Component {
             lives: 3,
             time: 60000,
             gameInProgress: false,
+            prevSpeedData: this.state.speedData,
             speedData: [],
             positionData: [],
             boostData: 360
@@ -164,8 +189,15 @@ export class PageProvider extends Component {
     }
 
     postPositionPoint(point) {
+        const withTime = {
+            x: point.x,
+            y: point.y,
+            time: this.state.time
+        }
+
         this.setState({
-            positionData: [...this.state.positionData, point]
+            positionData: [...this.state.positionData, point],
+            positionDataWithTime: [...this.state.positionDataWithTime, withTime]
         })
     }
 
@@ -194,15 +226,133 @@ export class PageProvider extends Component {
     }
 
     postAsteriodPositionPoints(data) {
+        const withTime = {
+            data: data,
+            time: this.state.time
+        }
+
         this.setState({
-            asteriodPositionData: [...this.state.asteriodPositionData, data]
+            asteriodPositionData: [...this.state.asteriodPositionData, data],
+            asteriodPositionDataWithTime: [...this.state.asteriodPositionDataWithTime, withTime]
         })
     }
 
     postHoopPositionPoints(data) {
+        const withTime = {
+            data: data,
+            time: this.state.time
+        }
+
         this.setState({
-            hoopPositionData: [...this.state.hoopPositionData, data]
+            hoopPositionData: [...this.state.hoopPositionData, data],
+            hoopPositionDataWithTime: [...this.state.hoopPositionDataWithTime, withTime]
         })
+    }
+
+    postFlight() {
+        const payload = {
+            flightData: {
+                username: 'bob',
+                score: this.state.prevScore,
+                livesLeft: this.state.prevLives,
+                timeLeft: this.state.prevTime
+            },
+            speedData: this.state.prevSpeedData,
+            positionData: this.state.positionDataWithTime,
+            hoopPositionData: this.state.hoopPositionDataWithTime,
+            asteriodPositionData: this.state.asteriodPositionDataWithTime
+        }
+
+        
+        FlightControl.dispatch(payload).then(() => {
+            clearInterval(this.state.statusCheckInterval)
+            this.setState({
+                prevSpeedData: [],
+                positionDataWithTime: [],
+                hoopPositionDataWithTime: [],
+                asteriodPositionDataWithTime: [],
+                uploadStatus: 0
+            })
+        });
+
+        this.statusCheckInterval();
+    }
+
+    checkStatus() {
+        this.setState({
+            uploadStatus: FlightControl.Status
+        })
+    }
+
+    statusCheckInterval() {
+        const interval = setInterval(this.checkStatus, 1);
+
+        this.setState({
+            statusCheckInterval: interval
+        })
+    }
+
+    showStats() {
+        if (!this.state.showStatsView) {
+            this.setState({
+                showStatsView: true
+            }, () => {
+                window.scrollTo(0,document.body.scrollHeight);
+            })
+        } else {
+            this.setState({
+                showStatsView: false
+            })
+        }
+    }
+
+    showLeaderboard() {
+        if (!this.state.showStatsView) {
+            this.setState({
+                showLeaderBoardView: true
+            }, () => {
+                window.scrollTo(0,document.body.scrollHeight);
+            })
+        } else {
+            this.setState({
+                showLeaderBoardView: false
+            })
+        }
+    }
+
+    showSettings() {
+        if (!this.state.showSettingsView) {
+            this.setState({
+                showSettingsView: true
+            }, () => {
+                window.scrollTo(0,document.body.scrollHeight);
+            })
+        } else {
+            this.setState({
+                showSettingsView: false
+            })
+        }
+    }
+
+    handleScrollUp() {
+        var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+        
+        if (this.state.lastScrollTop !== null && st < this.state.lastScrollTop) {
+            this.setState({
+                showStatsView: false,
+                showLeaderBoardView: false,
+                showSettingsView: false
+            })
+        }
+
+        const lastScrollTop = st <= 0 ? 0 : st;
+        this.setState({
+            lastScrollTop
+        })
+    }
+
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScrollUp);
     }
 
     render() {
@@ -228,7 +378,12 @@ export class PageProvider extends Component {
                 attachProjectileInvoke: this.attachProjectileInvoke,
                 attachProjectileInterval: this.attachProjectileInterval,
                 postAsteriodPositionPoints: this.postAsteriodPositionPoints,
-                postHoopPositionPoints: this.postHoopPositionPoints
+                postHoopPositionPoints: this.postHoopPositionPoints,
+                postFlight: this.postFlight,
+                showStats: this.showStats,
+                showLeaderboard: this.showLeaderboard,
+                showSettings: this.showSettings,
+                mainRef: this.mainRef
             }}>
                 {this.props.children}
             </PageContext.Provider>
