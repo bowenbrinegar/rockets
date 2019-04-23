@@ -1,5 +1,5 @@
 .leaderboard-wrapper {
-    position: relative
+    position: relative;
 }
 
 .LeaderboardModalContainer {
@@ -7,6 +7,16 @@
     width: 100vw;
     height: 100vh;
     display: flex;
-    flex-direction: row;
-    background: white;
+    align-items: center;
+    justify-content: center;
+    background: rgb(50,50,50);    
+}
+
+.leader-pod > h3 {
+    float: left;
+}
+
+.LeaderboardModalContainer .wrapper {
+    background: darkgray;
+    padding: 30px;
 }
