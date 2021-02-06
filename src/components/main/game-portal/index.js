@@ -4,12 +4,13 @@ import Game from './game';
 import Data from './data';
 import { PageContext } from '../../../contexts';
 import ScoreBoard from './scoreboard';
-import StatsModal from './stats';
 import Leaderboard from './leaderboard';
 import Settings from './settings';
 
+
 class GamePortal extends Component {
     render() {
+		const { showStatsView, showLeaderBoardView, showSettingsView } = this.props;
         return (
             <div className='wrapper'>
                 <div className="GamePortalContainer">
@@ -37,27 +38,14 @@ class GamePortal extends Component {
                         </PageContext.Consumer>
                     </div>
                 </div>
-                {this.props.showStatsView === true ? (
+                {showStatsView || showLeaderBoardView  || showSettingsView   ? (
                     <div className='stats-modal'>
-                        <PageContext.Consumer>
-                            {
-                                state => <StatsModal {...state} />
-                            }
-                        </PageContext.Consumer>
-                    </div>
-                ) : null}
-                {this.props.showLeaderBoardView === true ? (
-                    <div className='stats-modal'>
-                        <Leaderboard />
-                    </div>
-                ) : null}
-                {this.props.showSettingsView === true ? (
-                    <div className='stats-modal'>
-                        <PageContext.Consumer>
-                            {
-                                state => <Settings {...state} />
-                            }
-                        </PageContext.Consumer>
+						<div className='StatsModalContainer'>
+							<div>
+								<h1>Oops!</h1>
+								<h3>These are not the charts that you are looking for...</h3>
+							</div>
+						</div>
                     </div>
                 ) : null}
             </div>

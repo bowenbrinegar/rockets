@@ -8,7 +8,7 @@ export class PageProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            openPortal: true,
+            openPortal: false,
             score: 0,
             lives: 3,
             time: 60000,

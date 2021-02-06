@@ -6,6 +6,16 @@
     flex-direction: row;
 }
 
+.StatsModalContainer {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+}
+
 .stats {
     flex: 1;
     display: flex;
