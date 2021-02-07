@@ -31,6 +31,8 @@ class Game extends Component {
             prevYPosition: null,
             paused: false,
         }
+        
+        this.timeout = setTimeout(() => {}, 0)
 
         this.keyDown = this.keyDown.bind(this);
         this.keyUp = this.keyUp.bind(this);
@@ -588,7 +590,8 @@ class Game extends Component {
             this.onResize();
         }
 
-        setTimeout(this.checkZoom, 100);
+        clearTimeout(this.timeout)
+        this.timeout = setTimeout(this.checkZoom, 100);
     }
 
     componentDidMount() {
@@ -603,6 +606,7 @@ class Game extends Component {
     }
 
     componentWillUnmount() {
+        clearTimeout(this.timeout)
         document.removeEventListener('keydown', this.keyDown);
         document.removeEventListener('keyup', this.keyUp);
     }
@@ -623,11 +627,11 @@ class Game extends Component {
                                         <h1>Score: {this.props.prevScore}</h1>
                                         <h1>Lives Left: {this.props.prevLives}</h1>
                                         <h1>Time Left: {this.props.prevTime}</h1>
-                                        {this.props.uploadStatus === 0 ? (
+                                        {/* {this.props.uploadStatus === 0 ? (
                                             <button onClick={this.props.postFlight}>Submit Last Space Run</button>
                                         ) : (
                                             <h1>Uploading {this.props.uploadStatus} Objects</h1>
-                                        )}
+                                        )} */}
                                     </div>
                                 </div>
                             ) : null}
@@ -639,14 +643,14 @@ class Game extends Component {
                             this.state.asteriods.map(astr => {
                                 if (astr.styled) {
                                     return  (
-                                        <div className='asteriod' style={{left: astr.x, top: astr.y, color: 'red'}}>
-                                            <h3>--<br/>/------\<br/>\------/<br/>--<br/></h3>
+                                        <div key={`astriod_styled_${Math.floor(Math.random() * 1000000000)}`} className='asteriod' style={{left: astr.x, top: astr.y, color: 'red'}}>
+                                            <h3>--<br/>{'/------\\'}<br/>{'\\------/'}<br/>--<br/></h3>
                                         </div>
                                     )
                                 } else {
                                     return (
-                                        <div className='asteriod' style={{left: astr.x, top: astr.y}}>
-                                            <h3>--<br/>/------\<br/>\------/<br/>--<br/></h3>
+                                        <div key={`astriod_reg_${Math.floor(Math.random() * 1000000000)}`} className='asteriod' style={{left: astr.x, top: astr.y}}>
+                                            <h3>--<br/>{'/------\\'}<br/>{'\\------/'}<br/>--<br/></h3>
                                         </div>
                                     )
                                 } 
@@ -658,13 +662,13 @@ class Game extends Component {
                             this.state.hoops.map(hoop => {
                                 if (hoop.styled) {
                                     return  (
-                                        <div className='hoop' style={{left: hoop.x, top: hoop.y, color: 'green'}}>
+                                        <div key={`hoop_styled_${Math.floor(Math.random() * 1000000000)}`} className='hoop' style={{left: hoop.x, top: hoop.y, color: 'green'}}>
                                             <h3>;(________________);</h3>
                                         </div>
                                     )
                                 } else {
                                     return (
-                                        <div className='hoop' style={{left: hoop.x, top: hoop.y}}>
+                                        <div key={`hoop_reg_${Math.floor(Math.random() * 1000000000)}`} className='hoop' style={{left: hoop.x, top: hoop.y}}>
                                             <h3>;(________________);</h3>
                                         </div>
                                     )
@@ -673,7 +677,7 @@ class Game extends Component {
                         }
                     </div>
                     <div className='rocket' style={{ left: this.state.posX, top: this.state.posY }}>
-                        <h3 className='rocket-components body'>/\<br/>| |<br/>| |<br/>//|\\<br/>""</h3>
+                        <h3 className='rocket-components body'>{'/\\'}<br/>| |<br/>| |<br/>{'//|\\\\'}<br/>""</h3>
                         {
                             this.state.isMovingLeft ? (
                                 <div>
@@ -705,9 +709,9 @@ class Game extends Component {
                     />
                 </div>
                 <div className='base-kit' style={{opacity: 0}}>
-                    <h3 ref={this.baseAsteriod}>--<br/>/------\<br/>\------/<br/>--<br/></h3>
+                    <h3 ref={this.baseAsteriod}>--<br/>{'/------\\'}<br/>{'\\------/'}<br/>--<br/></h3>
                     <h3 ref={this.baseHoop}>;(________________);</h3>
-                    <h3 ref={this.baseRocket}>/\<br/>| |<br/>| |<br/>//|\\<br/>""</h3>
+                    <h3 ref={this.baseRocket}>{'/\\'}<br/>| |<br/>| |<br/>{'//|\\\\'}<br/>""</h3>
                 </div>
             </div>
         );

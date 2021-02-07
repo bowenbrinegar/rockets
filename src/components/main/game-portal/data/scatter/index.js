@@ -44,7 +44,7 @@ class Scatter extends Component {
     
     changeScatter(chart, label, data) {
         this.state.chart.data.datasets.forEach((dataset) => {
-        if(dataset.label == label){
+        if(dataset.label ===label){
             dataset.data = data;
         }  
         });

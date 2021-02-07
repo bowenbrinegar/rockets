@@ -16,6 +16,14 @@
     background: white;
 }
 
+.desktop-warning-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .stats {
     flex: 1;
     display: flex;
